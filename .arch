@@ -1,0 +1,84 @@
+places:
+[github]
+[ec2]
+[firebase auth]?(the console will mainly be used; but is there any room to make firebase a part of ci/cd)
+[localmachine]
+[s3]?(you can host the site from the same machine)
+
+timeline:
+(ec2 starts) -> (systemd-start)
+[systemd-start]:
+  get the needed files (but from where?)
+  configure systemd using those files and run it
+(push changes) -> (actions can do something)?
+
+security:
+[key transfer]:
+(aws key -> github secrets)
+(github key -> aws secrets manager)
+
+init:
+initially, there is no code in the specified di-
+rectory?(should it be this way? there is an
+option to make sure that some initial code
+for the server is available at start)
+
+[github]
+*) supposed to have node and npm installed
+onpush on both:
+  build cvpdfviewer/backend/src to cvpdfviewer/backend/build
+  build cvpdfviewer/frontend/src to cvpdfviewer/frontend/src
+  copy the build to ec2 (now just one ec2 with static url is okay)
+
+
+[ec2]:
+*) supposed to have node and npm installed
+*) needs systemd to be configured:
+  if the src dir is empty, that runs simply should receive an error from npm
+  ?) how should systemd be setup
+    *) we can put code to do this on github. and
+       make systemd to fetch it on launch and
+       run it. seems like the two things are a bit
+       too coupled right now.
+       in ideal scenario, prolly the github action
+       should create the full ec2 instance configu
+       ration somehow, e.g. using cloudformation,
+       ec2 ami, or something else.
+       however, for now, this is prolly okay.
+
+[database]?
+i guess there are two options to manage the db:
+1) to tie it to github
+2) to manage it separately
+
+when should changes be applied to the db?
+on commits might make sense.
+now, the tables are like resources that need to
+be somehow locked. if two people are trying to
+add a new column to a db which has the same name
+that should not be possible. even more, two people
+should not be updating the table at the same time
+prolly.
+
+if a person updates the table, it should be fine
+if it is just adding a new column. cause the
+existing column references other columns anyways.
+
+however, if the changes regards the deletion of
+a column, then that needs to be handled somehow,
+like what happens during a merge conflict maybe.
+this makes me feel like the code in the repo and
+the database should be synced. i.e. there should
+not be code that uses nonexistent columns in the
+database. therefore, there should prolly be the
+information about the current state of the db in
+the repo.
+however, it also feels like the db must have some
+meta tables about the migration. i do not why. (?)
+maybe, there needs to be cooperation between the
+ci/cd code and that meta tables in the database.
+also, the initial data sources.
+
+
+
+
