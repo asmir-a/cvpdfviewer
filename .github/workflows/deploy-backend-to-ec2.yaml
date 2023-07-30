@@ -15,12 +15,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: build and copy to ec2
-        env:
-          EC2_SSH_KEY: ${{secrets.EC2_SSH_KEY}}
-          EC2_ADDRESS: ${{secrets.EC2_ADDRESS}}
-        run: |
-          echo "$EC2_SSH_KEY" > ec2-key.pem
-          chmod 400 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ubuntu@15.165.76.123 "sudo rm -rf /home/ubuntu/cvpdfviewer"
-          scp -r -i ec2-key.pem ./ ubuntu@EC2_ADDRESS:/home/ubuntu/cvpdfviewer
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_ADDRESS }}
+          username: ubuntu
+          port: 22
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "build"
+          target: "test"
