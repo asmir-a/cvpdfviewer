@@ -22,5 +22,5 @@ jobs:
           username: ubuntu
           port: 22
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "build/*"
+          source: "backend/*"
           target: "/home/ubuntu/backend"
