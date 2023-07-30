@@ -22,5 +22,5 @@ jobs:
           username: ubuntu
           port: 22
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "backend/*"
-          target: "/home/ubuntu/backend"
+          source: "./*"
+          target: "/home/ubuntu/cvpdfviewer"
