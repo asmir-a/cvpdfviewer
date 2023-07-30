@@ -17,8 +17,8 @@ jobs:
         uses: actions/checkout@v3
       - name: build and copy to ec2
         env:
-          EC2_SSH_KEY = ${{secrets.EC2_SSH_KEY}}
-          EC2_ADDRESS = ${{secrets.EC2_ADDRESS}}
+          EC2_SSH_KEY: ${{secrets.EC2_SSH_KEY}}
+          EC2_ADDRESS: ${{secrets.EC2_ADDRESS}}
         run: |
           echo $EC2_SSH_KEY > ec2-key.pem
           ssh -i ec2-key.pem ubuntu@$EC2_ADDRESS "rm -rf /home/ubuntu/cvpdfviewer"
