@@ -20,7 +20,7 @@ jobs:
           EC2_SSH_KEY: ${{secrets.EC2_SSH_KEY}}
           EC2_ADDRESS: ${{secrets.EC2_ADDRESS}}
         run: |
-          echo $EC2_SSH_KEY > ec2-key.pem
+          echo "$EC2_SSH_KEY" > ec2-key.pem
           chmod 400 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ubuntu@$EC2_ADDRESS "rm -rf /home/ubuntu/cvpdfviewer"
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ubuntu@${EC2_ADDRESS} "rm -rf /home/ubuntu/cvpdfviewer"
           scp -r -i ec2-key.pem ./ ubuntu@EC2_ADDRESS:/home/ubuntu/cvpdfviewer
