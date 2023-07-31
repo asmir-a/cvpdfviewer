@@ -22,4 +22,4 @@ jobs:
           chmod 400 ~/.ssh/ec2_key.pem
           ssh-keyscan -H ${{ secrets.EC2_ADDRESS }} >> ~/.ssh/known_hosts
       - name: copy the directories
-        run: scp -i ~/.ssh/ec2_key.pem -r . ubuntu@${{ secrets.EC2_ADDRESS }}:/home/ubuntu/cvpdfviewer
+        run: scp -i ~/.ssh/ec2_key.pem -r $GITHUB_WORKSPACE/* ubuntu@${{ secrets.EC2_ADDRESS }}:/home/ubuntu/cvpdfviewer
