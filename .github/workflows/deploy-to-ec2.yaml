@@ -29,7 +29,7 @@ jobs:
           mv ./frontend cvpdfviewer
           scp -i ~/.ssh/ec2_key.pem -r $GITHUB_WORKSPACE/cvpdfviewer ubuntu@${{ secrets.EC2_ADDRESS }}:/home/ubuntu/
       - name: compile the frontend and backend
-        run: ssh -i ~/.ssh/ec2_key.pem ubuntu@${{ secrets.EC2_ADDRESS }}"
+        run: ssh -i ~/.ssh/ec2_key.pem ubuntu@${{ secrets.EC2_ADDRESS }} "
                npm build --prefix /home/ubuntu/cvpdfviewer/frontend
             && npm run build --prefix /home/ubuntu/cvpdfviewer/backend
           "
