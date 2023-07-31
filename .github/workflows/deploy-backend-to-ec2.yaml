@@ -23,3 +23,9 @@ jobs:
           ssh-keyscan -H ${{ secrets.EC2_ADDRESS }} >> ~/.ssh/known_hosts
       - name: copy the directories
         run: scp -i ~/.ssh/ec2_key.pem -r $GITHUB_WORKSPACE/* ubuntu@${{ secrets.EC2_ADDRESS }}:/home/ubuntu/cvpdfviewer
+      - name: compile the frontend
+        run: ssh -i ~/.ssh/ec2_key.pem "
+            npm run build --prefix /home/ubuntu/cvpdfviewer/frontend
+            && npm run build --prefix /home/ubuntu/cvpdfviewer/backend
+            && npm run start --prefix /home/ubuntu/cvpdfviewer/backend
+          "
