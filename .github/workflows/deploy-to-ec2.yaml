@@ -40,6 +40,7 @@ jobs:
             && npm install   --prefix /home/ubuntu/cvpdfviewer/backend
             && npm run build --prefix /home/ubuntu/cvpdfviewer/frontend
             && npm run build --prefix /home/ubuntu/cvpdfviewer/backend
+            && echo $PATH
             && pm2 start /home/ubuntu/cvpdfviewer/backend/build/server.js -i max --name server
             && pm2 restart server
           "
