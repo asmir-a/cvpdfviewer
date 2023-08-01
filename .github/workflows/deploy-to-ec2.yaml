@@ -35,8 +35,7 @@ jobs:
             ubuntu@${{ secrets.EC2_ADDRESS }}:/home/ubuntu/
 
       - name: compile the frontend and backend
-        run: ssh -i ~/.ssh/ec2_key.pem ubuntu@${{ secrets.EC2_ADDRESS }} \
-          "\
+        run: ssh -i ~/.ssh/ec2_key.pem ubuntu@${{ secrets.EC2_ADDRESS }} "
             npm install   --prefix /home/ubuntu/cvpdfviewer/frontend && \
             npm install   --prefix /home/ubuntu/cvpdfviewer/backend && \
 
