@@ -5,7 +5,8 @@
   "main": "bundle.js",
   "scripts": {
     "build": "webpack --mode production && rm -rf ./../backend/static && cp -r ./build ./../backend/static",
-    "start": "webpack serve --mode development"
+    "start-server": "webpack serve --mode development",
+    "start-watcher": "webpack --watch --mode development"
   },
   "keywords": [],
   "author": "Asmir Abdimazhit",

@@ -80,5 +80,167 @@ ci/cd code and that meta tables in the database.
 also, the initial data sources.
 
 
+environments:
+prod:
+dev:
+  RUN:
+  the frontend and backend are easy to set up to run locally.
+  it just assumes that node and npm are installed.
+  there might be a problem if a wrong version of nodejs is installed.
+  however, forcing to use docker might solve this issue.
+  the database however is a bit tricky. the database on prod and the
+  database on local will have different data in them.
+  the running problem can be solved similarly, using docker.
+
+  HOT-RELOADING:
+  everything also should be lively updated.
+  nodemon can be updating the backend whenever, the source and build directories change in the
+  server folder. the live updating on writes for frontend code can also be cool. now, npm run
+  build is necessary on each step.
+
+  the database however is the most difficult thing to be lively updating. the sql scripts to
+  change the database will be written somewhere. the developer would need to be running the
+  scripts every time he or she wants to change the db.
+
+  HACKATHON:
+  this can be kinda easier cause the main db can be fully updated as it is just prototyping.
+  in production, we do not have this luxury and migrations need to be applied step by step.
+
+  the migrations might be applied whenever the dev branch is merged to the main one.
+
+  FETCHING UPDATES:
+  ...
+
+  for now let's assume that there is only one sql file to apply changes to the database.
+
+  before pushing, changes the developer needs to pull changes from the repo. the developer
+  will test the changes he made before pulling. then, he will pull from the repo. if the
+  sql file changes by another developer, git will raise a conflict probably. the developer
+  will need to resolve the conflict. the state machine is quite complicated.
+
+
+
+      data/database/init-database.sql
+      data/database/init-data.sql
+
+
+       local [init.sql]
+      global [init.sql]
+
+
+      there needs to be a watcher scripts to monitor changes made to the init.sql file.
+      if changed:
+        drop database
+        create a new database
+        apply init.sql file
+        populate with some dumb data for setting up initial/test users
+
+      github actions:
+        on push: //this is not gonna get pushed if there is a conflict when a user tries to push
+          - paths:
+            data/database
+        jobs:
+          drop database //these need to db_string from somewhere. prolly, will be stored in the secrets.
+          create database
+          psql -f init-database.sql
+          psql -f     init-data.sql //so that it was easier to manually test
+
+      if there is a conflict while pushing the changes,
+      the developer would need to manually review them
+      and push the reviewed changes.
+
+      if the changes are not logically contradicting. this approach 
+      should work. however, tests are still necessary. in the hacka
+      thon, they can be done simply manually.
+
+
+      LISTEN to database changes locally:
+      monitor init-*.sql files.
+      if changed:
+        psql drop database
+        psql create database
+        psql -f init-database.sql
+
+      
+database strings and environment variables:
+there should prolly be an .env file in the data/database folder.
+then, the script should be listening to the changes in the 
+data/database folder, read the .env file, and apply the changes.
+
+
+how about the init-data.sql file? it should also run. if it gives an
+error. the script should display the error to the user. the user,
+should update the data being inserted and what?
+
+the script should wait to the next update/write to a file and rerun the
+steps if an error appears. saying something like waiting for the next
+write to restart the database.
+
+
+
+
+by the way, the hackathon environment is similar to the prelease en
+vironment with multiple developers in it
+
+
+
+there are multiple entities involved in handling the migrations.
+the migration files themselves. the gitgub repo. the filesystem.
+the database itself.
+the database itself has two sub entities that migth take part
+in this whole process. the first one are the tables themselves.
+the second one is the underlying schema of the database.
+
+one more esoteric, but potentially dope option would be to create
+a service (maybe rest api endpoint) for handling the migrations
+within the company. it will take care of conflict and it will
+have more tools to utilize.
+
+the migrations prolly should be stored in the database so that
+we did not to take care of backups separately for a number of 
+different databases.
+
+these are like resources that have be to synchronized and maybe
+managed to make the process of migration correct and easy.
+
+filesystem takes part because we can view the folder containing
+migrations as a concurrent data structure, which is being tried
+to be modified by a nubmer of developers.
+
+
+migration-files centric approach:
+dev-a migrations:          dev-b migrations:          dev-c migrations:
+[1, 2,..., n-1, n, a-n+1]  [1, 2,..., n-1, n, b-n+1]  [1, 2,..., n-2, c-n+1]
+<=>: *(see below)
+dev env migrations:
+[1, 2,..., n-2, n-1, n]
+==>: this process is straightforward: it is unidirectional
+prod env migrations:
+[1, 2,..., n-1]
+*:
+case dev-c trying to push migrations:
+git will not allow that to happen. it will ask dev-c to resolve conflicts.
+even if the dev-c tries to push without stashing, git will ask dev-c to
+handle the conflicts. the migrations should be atomic (i.e. one modification
+per file). this prolly can be done using a linter for postgresql.
+
+case dev-a and dev-b are trying to push migrations together:
+one of them succeeds and the other one is gonna have a conflict, which
+will be resolved similarly to how the conflict is resolved in the previous
+case.
+
+now the question (?) is how do developers create those files. if there are
+thousands of migrations, it might be tedious. however, that is still fine.
+
+git should not allow the deletion of any migrations files that are
+successfully committed to the database.
+
+
+a more production ready approach would be to use docker for the development
+environment with all the services mocked in separate containers.
+
+
+
+
 
 

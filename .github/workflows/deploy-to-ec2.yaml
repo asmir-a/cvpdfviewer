@@ -45,8 +45,7 @@ jobs:
 
           /home/ubuntu/.nvm/versions/node/v18.17.0/bin/pm2 start \
           /home/ubuntu/cvpdfviewer/backend/build/server.js \
-          -i max --name server && \
-          /home/ubuntu/.nvm/versions/node/v18.17.0/bin/pm2 restart server \
+          -i max --name server
           "
 
 
