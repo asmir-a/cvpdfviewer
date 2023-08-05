@@ -43,6 +43,7 @@ jobs:
           npm run build --prefix /home/ubuntu/cvpdfviewer/frontend && \
           npm run build --prefix /home/ubuntu/cvpdfviewer/backend  && \
 
+          /home/ubuntu/.nvm/versions/node/v18.17.0/bin/pm2 stop server
           /home/ubuntu/.nvm/versions/node/v18.17.0/bin/pm2 start \
           /home/ubuntu/cvpdfviewer/backend/build/server.js \
           -i max --name server
