@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actinos/checkout@v3
+        uses: actions/checkout@v3
       - name: update schema
         run: |
           psql ${{ secrets.DB_STRING }} -f data/database/full-schema.sql
