@@ -1,3 +1,3 @@
-create table users (
-    username text
+CREATE TABLE users (
+  username TEXT
 );

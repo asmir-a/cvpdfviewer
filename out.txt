@@ -1,0 +1,28 @@
+{
+    "Vpcs": [
+        {
+            "CidrBlock": "10.0.0.0/24",
+            "DhcpOptionsId": "dopt-0e1b97bce071b32d1",
+            "State": "available",
+            "VpcId": "vpc-04ad4a43decd59e8a",
+            "OwnerId": "717934568012",
+            "InstanceTenancy": "default",
+            "CidrBlockAssociationSet": [
+                {
+                    "AssociationId": "vpc-cidr-assoc-02a20f98e4e39bac0",
+                    "CidrBlock": "10.0.0.0/24",
+                    "CidrBlockState": {
+                        "State": "associated"
+                    }
+                }
+            ],
+            "IsDefault": false,
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "cvpdfviewer-vpc"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+name: Update Schema in Database
+
+on: 
+  push:
+    branches:
+      - main
+    paths: 
+      - data/database
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: update schema in db
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actinos/checkout@v3
+      - name: update schema
+        run: |
+          psql ${{ secrets.DB_STRING }} -f data/database/full-schema.sql
