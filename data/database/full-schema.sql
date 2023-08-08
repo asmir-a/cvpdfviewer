@@ -1,3 +1,3 @@
 CREATE TABLE users (
-  username NUMERIC
+  username TEXT
 );
